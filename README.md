@@ -202,6 +202,88 @@ Si se encuentran **2 o más**, el ADN es mutante.
 
 ---
 
+# 📘 **Documentación Swagger + Evidencias**
+
+A continuación se muestran capturas reales de Swagger demostrando el funcionamiento correcto de la API en cada uno de sus endpoints principales.
+
+Esto sirve como evidencia de que el sistema responde de forma consistente y acorde a lo solicitado en el examen.
+
+---
+
+## 🧬 **1. POST /mutant – Caso Mutante (200 OK)**
+
+Este ejemplo muestra una secuencia de ADN válida que contiene al menos **dos patrones mutantes**, lo que permite responder con código **200 OK**.
+
+📌 **Request (Body – JSON):**
+
+```json
+{
+  "dna": [
+    "ATGCGA",
+    "CAGTGC",
+    "TTATGT",
+    "AGAAGG",
+    "CCCCTA",
+    "TCACTG"
+  ]
+}
+```
+
+📌 **Respuesta esperada: (Swagger)**
+✔ **200 OK** – Mutante detectado
+
+🖼 **Captura Swagger**
+
+---
+
+## 🚫 **2. POST /mutant – Caso Humano (403 Forbidden)**
+
+Este ejemplo contiene un ADN válido, pero **no cumple** con las dos secuencias requeridas, por lo que la API debe responder **403 Forbidden**.
+
+📌 **Request (Body – JSON):**
+
+```json
+{
+  "dna": [
+    "ATGCGA",
+    "TACGTA",
+    "CGTACG",
+    "GCATGC",
+    "ATGCAT",
+    "TACGTA"
+  ]
+}
+```
+
+📌 **Respuesta esperada: (Swagger)**
+❌ **403 Forbidden** – No es mutante
+
+🖼 **Captura Swagger**
+
+
+---
+
+## 📊 **3. GET /api/stats – Estadísticas reales**
+
+Después de enviar varios casos, stats debe reflejar:
+
+* `count_mutant_dna`
+* `count_human_dna`
+* `ratio = mutants / humans`
+
+📌 **Respuesta esperada:**
+
+```json
+{
+  "count_mutant_dna": 4,
+  "count_human_dna": 6,
+  "ratio": 0.66
+}
+```
+
+🖼 **Captura Swagger**
+
+---
 # 🧩 Diagrama de Secuencia 
 
 El siguiente diagrama de secuencia representa **de manera integral el flujo completo de la aplicación Mutantes API**, abarcando todos los endpoints implementados:
