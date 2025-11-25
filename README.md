@@ -183,9 +183,9 @@ start build/reports/jacoco/test/html/index.html
 
 *(Incluye controlador, servicio, validador y excepciones)*
 
-👉 **91% de cobertura total**
+👉 **95% de cobertura total**
 
-<img width="1440" height="372" alt="Captura de pantalla 2025-11-24 a la(s) 22 41 21" src="https://github.com/user-attachments/assets/f61bf7c3-a0f2-4f27-afca-580c9ef992dd" />
+<img width="1440" height="372" alt="Captura de pantalla 2025-11-25 a la(s) 02 12 02" src="https://github.com/user-attachments/assets/5cacdde1-83af-4864-955b-ba5616202d5c" />
 
 ---
 
