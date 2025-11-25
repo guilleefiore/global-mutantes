@@ -185,7 +185,7 @@ start build/reports/jacoco/test/html/index.html
 
 👉 **91% de cobertura total**
 
-![Captura de pantalla 2025-11-24 a la(s) 22.41.21.png](../../Desktop/Captura%20de%20pantalla%202025-11-24%20a%20la%28s%29%2022.41.21.png)
+<img width="1440" height="372" alt="Captura de pantalla 2025-11-24 a la(s) 22 41 21" src="https://github.com/user-attachments/assets/f61bf7c3-a0f2-4f27-afca-580c9ef992dd" />
 
 ---
 
@@ -249,7 +249,7 @@ El diagrama muestra los flujos alternativos:
 
 Este diagrama centraliza todo el comportamiento del sistema y permite visualizar cómo interactúan los módulos que implementaste durante el desarrollo.
 
-![Untitled diagram-2025-11-25-020729.png](../../Desktop/Untitled%20diagram-2025-11-25-020729.png)
+<img width="5360" height="3008" alt="Untitled diagram-2025-11-25-020729" src="https://github.com/user-attachments/assets/37e2a471-2de4-403d-90a7-852ff4349d3d" />
 
 ---
 
