@@ -11,9 +11,9 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    // ---------------------------------------------
+    // ---------------------------------------------------------
     // 1. ADN inválido → 400 BAD REQUEST
-    // ---------------------------------------------
+    // ---------------------------------------------------------
     @ExceptionHandler(InvalidDnaException.class)
     public ResponseEntity<Map<String, Object>> handleInvalidDna(InvalidDnaException ex) {
 
@@ -26,9 +26,9 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
 
-    // ---------------------------------------------
-    // 2. Errores de entrada → 400 BAD REQUEST
-    // ---------------------------------------------
+    // ---------------------------------------------------------
+    // 2. IllegalArgumentException → 400 BAD REQUEST
+    // ---------------------------------------------------------
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Map<String, Object>> handleIllegalArgument(IllegalArgumentException ex) {
 
@@ -39,20 +39,5 @@ public class GlobalExceptionHandler {
         );
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
-    }
-
-    // ---------------------------------------------
-    // 3. Errores inesperados → 500 INTERNAL_SERVER_ERROR
-    // ---------------------------------------------
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<Map<String, Object>> handleGeneral(Exception ex) {
-
-        Map<String, Object> body = Map.of(
-                "timestamp", LocalDateTime.now().toString(),
-                "error", "Internal Server Error",
-                "message", ex.getMessage()
-        );
-
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
     }
 }

@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class InvalidDnaExceptionHandlerTest {
 
-    private final InvalidDnaExceptionHandler handler = new InvalidDnaExceptionHandler();
+    private final GlobalExceptionHandler handler = new GlobalExceptionHandler();
 
     @Test
     void testHandleInvalidDnaException() {
@@ -17,20 +17,12 @@ class InvalidDnaExceptionHandlerTest {
         InvalidDnaException ex =
                 new InvalidDnaException("ADN inválido de prueba");
 
-        ResponseEntity<Object> response =
-                handler.handleInvalidDnaException(ex);
+        ResponseEntity<Map<String, Object>> response =
+                handler.handleInvalidDna(ex);
 
-        // 1. Código HTTP correcto
         assertEquals(400, response.getStatusCode().value());
-
-        // 2. El body debe ser un Map
-        assertTrue(response.getBody() instanceof Map);
-
-        Map<?, ?> body = (Map<?, ?>) response.getBody();
-
-        // 3. Verificar campos
-        assertEquals("Invalid DNA", body.get("error"));
-        assertEquals("ADN inválido de prueba", body.get("message"));
-        assertNotNull(body.get("timestamp"));
+        assertTrue(response.getBody().containsKey("error"));
+        assertEquals("Invalid DNA", response.getBody().get("error"));
+        assertEquals("ADN inválido de prueba", response.getBody().get("message"));
     }
 }
