@@ -287,29 +287,6 @@ Después de enviar varios casos, stats debe reflejar:
 <img width="1440" height="861" alt="Captura de pantalla 2025-11-25 a la(s) 00 14 46" src="https://github.com/user-attachments/assets/2193250a-8cb6-4cf2-b53b-aa9e5e605618" />
 
 ---
-Tu texto está **muy bien**, pero **sí conviene actualizarlo** porque ahora tu Diagrama de Secuencia **incluye más actores y comportamientos** que no están mencionados:
-
-### 🔥 ¿Qué agregaste en el DS nuevo?
-
-* **RateLimitingFilter**
-* **GlobalExceptionHandler**
-* Flujo alternativo de **429 Too Many Requests**
-* Flujo de **InvalidDnaException** → 400
-* Más detalle en la construcción de DTOs
-* Hash + búsqueda previa en BD
-* Ramas de ADN ya existente vs. nuevo
-* Manejo de excepciones
-* Async (`analyzeDnaAsync`) como nota opcional
-
-👉 **Tu descripción actual NO menciona nada de eso**, por eso conviene actualizarla para que coincida con el DS completo.
-
----
-
-# ✅ **Versión actualizada y perfecta para el README**
-
-Pegá esto:
-
----
 
 # 🧩 Diagrama de Secuencia — Versión Completa de Toda la Aplicación
 
