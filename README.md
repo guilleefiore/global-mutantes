@@ -236,7 +236,6 @@ Este ejemplo muestra una secuencia de ADN válida que contiene al menos **dos pa
 
 <img width="1440" height="784" alt="Captura de pantalla 2025-11-24 a la(s) 23 22 05" src="https://github.com/user-attachments/assets/a56c6ca3-4815-4017-ad80-ea4beb84e612" />
 
-
 ---
 
 ## 🚫 **2. POST /mutant – Caso Humano (403 Forbidden)**
@@ -261,8 +260,9 @@ Este ejemplo contiene un ADN válido, pero **no cumple** con las dos secuencias 
 📌 **Respuesta esperada: (Swagger)**
 ❌ **403 Forbidden** – No es mutante
 
-🖼 **Captura Swagger**
+<img width="1440" height="678" alt="Captura de pantalla 2025-11-24 a la(s) 23 32 15" src="https://github.com/user-attachments/assets/9dc3b14c-4b95-4991-9413-12968f04c0df" />
 
+<img width="1440" height="787" alt="Captura de pantalla 2025-11-24 a la(s) 23 32 24" src="https://github.com/user-attachments/assets/176a7cf9-8417-4ffd-88f3-134f1a84fa5d" />
 
 ---
 
