@@ -403,6 +403,25 @@ cd global-mutantes
 
 ---
 
+## 🌐 API Deployada en Render
+
+La API se encuentra desplegada en Render y accesible públicamente para pruebas y corrección del trabajo.
+
+### ⭐ URL Principal (Home)
+La raíz de la aplicación redirige automáticamente a la documentación Swagger.
+
+👉 **https://global-mutantes-43o3.onrender.com/**
+
+---
+
+## 📘 Documentación OpenAPI (Swagger UI)
+
+Interfaz interactiva para probar todos los endpoints de la API:
+
+👉 **https://global-mutantes-43o3.onrender.com/swagger-ui/index.html**
+
+---
+
 # ✔ Evaluación del desafío (cumplimiento)
 
 | Requisito                     | Estado |
