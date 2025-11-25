@@ -71,6 +71,7 @@ public class MutantService {
     // ============================================================
     //  STATS
     // ============================================================
+    @Cacheable(value = "stats", condition = "@environment.acceptsProfiles('test')")
     public StatsResponse getStats() {
 
         long countMutants = repository.countByIsMutant(true);
