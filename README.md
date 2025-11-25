@@ -287,54 +287,128 @@ Después de enviar varios casos, stats debe reflejar:
 <img width="1440" height="861" alt="Captura de pantalla 2025-11-25 a la(s) 00 14 46" src="https://github.com/user-attachments/assets/2193250a-8cb6-4cf2-b53b-aa9e5e605618" />
 
 ---
-# 🧩 Diagrama de Secuencia 
+Tu texto está **muy bien**, pero **sí conviene actualizarlo** porque ahora tu Diagrama de Secuencia **incluye más actores y comportamientos** que no están mencionados:
 
-El siguiente diagrama de secuencia representa **de manera integral el flujo completo de la aplicación Mutantes API**, abarcando todos los endpoints implementados:
+### 🔥 ¿Qué agregaste en el DS nuevo?
+
+* **RateLimitingFilter**
+* **GlobalExceptionHandler**
+* Flujo alternativo de **429 Too Many Requests**
+* Flujo de **InvalidDnaException** → 400
+* Más detalle en la construcción de DTOs
+* Hash + búsqueda previa en BD
+* Ramas de ADN ya existente vs. nuevo
+* Manejo de excepciones
+* Async (`analyzeDnaAsync`) como nota opcional
+
+👉 **Tu descripción actual NO menciona nada de eso**, por eso conviene actualizarla para que coincida con el DS completo.
+
+---
+
+# ✅ **Versión actualizada y perfecta para el README**
+
+Pegá esto:
+
+---
+
+# 🧩 Diagrama de Secuencia — Versión Completa de Toda la Aplicación
+
+El siguiente diagrama de secuencia representa **todo el flujo interno de la Mutantes API**, incluyendo los tres endpoints implementados:
 
 * **POST /mutant**
 * **GET /api/stats**
 * **GET /health**
 
-El diagrama muestra **todos los actores, componentes internos y objetos creados**, reflejando cómo viaja la información desde el cliente hasta la capa de datos y regresa con la respuesta procesada.
+Este diagrama describe de manera detallada **cómo viaja la información desde el cliente**, pasando por validaciones, filtros, servicio de negocio, detección, repositorio, excepciones y construcción de respuestas.
 
-Incluye:
+---
 
-### ✔ Controllers
+## 🛡 Componentes incluidos en el diagrama
 
-* *MutantController*
-* *StatsController*
-* *HealthController*
+### ✔ **Filtros y manejo transversal**
 
-### ✔ Validación
+* **RateLimitingFilter**: limita a 10 requests por minuto por IP y devuelve *429 Too Many Requests* cuando se excede.
+* **GlobalExceptionHandler**: captura excepciones y devuelve respuestas estructuradas, como:
 
-* *DnaValidator*, que verifica formato NxN y caracteres válidos.
+  * `InvalidDnaException` → **400 Bad Request**
+  * otras excepciones → Bad Request
 
-### ✔ Lógica de negocio
+### ✔ **Controllers**
 
-* *MutantService*, que coordina el proceso.
-* *MutantDetector*, que ejecuta el algoritmo de detección horizontal, vertical y diagonal.
+* **MutantController**
+* **StatsController**
+* **HealthController**
 
-### ✔ Persistencia
+### ✔ **Validación**
 
-* *DnaRecordRepository*, responsable de almacenar cada ADN analizado y recuperar estadísticas de mutantes/humanos.
+* **DnaValidator**
+  Verifica que el ADN sea:
 
-### ✔ Objetos DTO creados
+  * Matriz **NxN**
+  * Solo caracteres **A, T, C, G**
 
-* *DnaRequest*
-* *StatsResponse*
-* *HealthResponse*
+### ✔ **Lógica de negocio**
 
-### ✔ Respuestas según caso
+* **MutantService**
 
-El diagrama muestra los flujos alternativos:
+  * valida ADN
+  * genera hash
+  * revisa si el ADN existe en BD
+  * delega al detector
+  * persiste resultado
+  * construye respuesta
+  * calcula estadísticas
 
-* **200 OK** si el ADN es mutante
-* **403 Forbidden** si no lo es
+* **MutantDetector**
+  Implementa detección por:
+
+  * horizontal
+  * vertical
+  * diagonal derecha
+  * diagonal izquierda
+  * manejo interno de secuencias superpuestas
+
+### ✔ **Persistencia**
+
+* **DnaRecordRepository**
+
+  * guarda cada ADN con su hash
+  * consulta si ya existe
+  * calcula `countMutants` y `countHumans`
+
+### ✔ **DTOs involucrados**
+
+* **DnaRequest**
+* **StatsResponse**
+* **HealthResponse**
+
+---
+
+## ✔ **Flujos alternativos representados**
+
+* **200 OK** para mutantes
+* **403 Forbidden** para humanos
+* **400 Bad Request** si el ADN es inválido
+* **429 Too Many Requests** si se supera el rate limit
 * **200 OK** en stats y health
 
-Este diagrama centraliza todo el comportamiento del sistema y permite visualizar cómo interactúan los módulos que implementaste durante el desarrollo.
+---
 
-<img width="5360" height="3008" alt="Untitled diagram-2025-11-25-020729" src="https://github.com/user-attachments/assets/37e2a471-2de4-403d-90a7-852ff4349d3d" />
+## 🎯 Propósito del diagrama
+
+Este diagrama centraliza **todo el comportamiento del sistema** en un único flujo, mostrando cómo se comunican los módulos que implementaste:
+
+* validación
+* detección
+* persistencia
+* manejo de excepciones
+* rate limiting
+* endpoints REST
+* respuestas JSON
+
+Es la representación **más completa y profesional** de la arquitectura lógica de tu entrega.
+
+<img width="7901" height="5528" alt="DS" src="https://github.com/user-attachments/assets/4dd73e70-1800-4126-8094-296e5238e9a8" />
 
 ---
 
