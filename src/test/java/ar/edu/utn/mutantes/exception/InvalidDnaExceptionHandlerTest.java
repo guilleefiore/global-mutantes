@@ -25,4 +25,30 @@ class InvalidDnaExceptionHandlerTest {
         assertEquals("Invalid DNA", response.getBody().get("error"));
         assertEquals("ADN inválido de prueba", response.getBody().get("message"));
     }
+
+    @Test
+    void testExceptionMessage() {
+        InvalidDnaException ex = new InvalidDnaException("Mensaje prueba");
+
+        assertEquals("Mensaje prueba", ex.getMessage());
+    }
+
+    @Test
+    void testHandleInvalidDnaExceptionWithoutMessage() {
+
+        InvalidDnaException ex = new InvalidDnaException(null);
+
+        ResponseEntity<Map<String, Object>> response =
+                handler.handleInvalidDna(ex);
+
+        assertEquals(400, response.getStatusCode().value());
+        assertEquals("Invalid DNA", response.getBody().get("error"));
+        assertNull(response.getBody().get("message"));
+    }
+
+    @Test
+    void testInvalidDnaExceptionConstructor() {
+        InvalidDnaException ex = new InvalidDnaException("Mensaje");
+        assertEquals("Mensaje", ex.getMessage());
+    }
 }
