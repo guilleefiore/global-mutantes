@@ -232,7 +232,10 @@ Este ejemplo muestra una secuencia de ADN válida que contiene al menos **dos pa
 📌 **Respuesta esperada: (Swagger)**
 ✔ **200 OK** – Mutante detectado
 
-🖼 **Captura Swagger**
+<img width="1440" height="703" alt="Captura de pantalla 2025-11-24 a la(s) 23 21 54" src="https://github.com/user-attachments/assets/cc165076-29b4-4d86-823e-b963b3debbf8" />
+
+<img width="1440" height="784" alt="Captura de pantalla 2025-11-24 a la(s) 23 22 05" src="https://github.com/user-attachments/assets/a56c6ca3-4815-4017-ad80-ea4beb84e612" />
+
 
 ---
 
