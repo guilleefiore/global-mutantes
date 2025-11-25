@@ -69,9 +69,8 @@ public class MutantService {
     }
 
     // ============================================================
-    //  STATS /stats (con caché)
+    //  STATS
     // ============================================================
-    @Cacheable("stats")
     public StatsResponse getStats() {
 
         long countMutants = repository.countByIsMutant(true);

@@ -70,4 +70,15 @@ public class RateLimitingFilter extends OncePerRequestFilter {
             this.startTime = startTime;
         }
     }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getRequestURI();
+
+        return path.startsWith("/v3/api-docs") ||
+                path.startsWith("/swagger-ui") ||
+                path.startsWith("/swagger-ui.html") ||
+                path.startsWith("/h2-console") ||      // <-- Necesario para que H2 funcione
+                path.equals("/error");                 // <-- Evita que ensucie swagger y browser
+    }
 }

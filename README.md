@@ -278,9 +278,9 @@ Después de enviar varios casos, stats debe reflejar:
 
 ```json
 {
-  "count_mutant_dna": 4,
-  "count_human_dna": 6,
-  "ratio": 0.66
+  "count_mutant_dna": 2,
+  "count_human_dna": 1,
+  "ratio": 2
 }
 ```
 
