@@ -284,7 +284,7 @@ Después de enviar varios casos, stats debe reflejar:
 }
 ```
 
-🖼 **Captura Swagger**
+<img width="1440" height="861" alt="Captura de pantalla 2025-11-25 a la(s) 00 14 46" src="https://github.com/user-attachments/assets/2193250a-8cb6-4cf2-b53b-aa9e5e605618" />
 
 ---
 # 🧩 Diagrama de Secuencia 
