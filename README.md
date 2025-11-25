@@ -1,235 +1,343 @@
-# 🧬 Mutantes API – Global Mutantes  
-API REST desarrollada en **Spring Boot** para detectar si un ADN pertenece a un mutante, siguiendo la lógica del desafío de Mercado Libre.  
-Incluye **validaciones**, **persistencia**, **rate limiting**, **caché**, **procesamiento asíncrono**, **Swagger**, **tests unitarios e integrales** y está lista para **deploy en Render**.
+# 🔬 Mutantes API – Examen MercadoLibre  
+**Versión:** 1.0 — *Detecta ADN mutante, guarda registros y expone estadísticas.*
 
 ---
 
-## 📂 Tecnologías
+## 📌 Descripción general
+
+Esta API permite determinar si una secuencia de ADN pertenece a un **mutante** o a un **humano**, cumpliendo con el desafío técnico de MercadoLibre.  
+El servicio está desarrollado con **Spring Boot 3.5**, base en **H2 en memoria**, documentación **OpenAPI/Swagger**, test unitarios, test de integración y **Jacoco** para aseguramiento de calidad.
+
+---
+
+# 🚀 Tecnologías utilizadas
+
 - Java 21  
-- Spring Boot 3.2+  
+- Spring Boot 3.5.8  
 - Spring Web  
 - Spring Data JPA  
 - H2 Database  
-- Spring Cache  
-- Spring AOP / Async  
-- Mockito / JUnit 5  
-- Swagger OpenAPI  
-- Jacoco coverage  
+- Spring Validation  
+- SpringDoc OpenAPI (Swagger UI)  
+- JUnit 5  
+- Jacoco  
+- Lombok  
+- Gradle  
 
 ---
 
-# 🚀 Endpoints
+# 🧬 Funcionalidades principales
 
-### ✔ POST `/mutant`
-Detecta si un ADN pertenece a un mutante.  
-Devuelve:
-- **200 OK** si es mutante  
-- **403 Forbidden** si NO es mutante  
-- **400 Bad Request** si el ADN es inválido  
+### ✔ Detectar si un ADN es mutante  
+### ✔ Persistir ADN analizados con hash único  
+### ✔ Obtener estadísticas globales  
+- `count_mutant_dna`  
+- `count_human_dna`  
+- `ratio`  
 
-#### Ejemplo de request:
+### ✔ Validación completa del ADN  
+- No nulo  
+- Matriz NxN  
+- Caracteres válidos: A – T – C – G  
 
-```json
-{
-  "dna": [
-    "ATGCGA",
-    "CAGTGC",
-    "TTATGT",
-    "AGAAGG",
-    "CCCCTA",
-    "TCACTG"
-  ]
-}
+### ✔ Rate Limiting  
+Máximo **10 requests por minuto por IP**.
+
+### ✔ Documentación Swagger  
+Disponible en:  
+📌 **http://localhost:8080/swagger-ui/index.html**
+
+---
+
+# 🗂 Estructura del Proyecto (paquetes principales)
+
 ```
 
-### ✔ GET `/stats`
+ar.edu.utn.mutantes
+├── controller
+├── service
+├── validator
+├── exception
+├── repository
+├── entity
+├── config
+└── dto
 
-Devuelve estadísticas con **caché en memoria**:
+````
+
+---
+
+# 📡 Endpoints
+
+## 🔹 POST `/mutant`
+Evalúa si el ADN es mutante.
+
+### Request:
+```json
+{
+  "dna": ["ATGCGA", "CAGTGC", "TTATGT", "AGAAGG", "CCCCTA", "TCACTG"]
+}
+````
+
+### Responses:
+
+**200 OK** – es mutante
+**403 Forbidden** – no es mutante
+**400 Bad Request** – ADN inválido
+
+---
+
+## 🔹 GET `/api/stats`
+
+Devuelve estadísticas:
 
 ```json
 {
-  "countMutantDna": 40,
-  "countHumanDna": 100,
+  "count_mutant_dna": 40,
+  "count_human_dna": 100,
   "ratio": 0.4
 }
 ```
 
-### ✔ GET `/health`
-
-Endpoint simple de salud para testing / Render.
-
 ---
 
-# 🧠 Lógica de Mutantes
+## 🔹 GET `/health`
 
-La API detecta mutantes buscando **secuencias de 4 letras iguales (A, T, C, G)** en:
+Simple check de salud:
 
-* Horizontal ↔
-* Vertical ↕
-* Diagonal ↘
-* Diagonal inversa ↙
-
-Un ADN se considera mutante si posee **al menos 2 secuencias válidas**.
-
-Toda entrada se valida previamente como **matriz NxN** con caracteres válidos.
-
----
-
-# 💾 Persistencia
-
-Cada ADN se guarda en H2 con:
-
-| Campo       | Descripción     |
-| ----------- | --------------- |
-| `dna_hash`  | SHA-256 del ADN |
-| `is_mutant` | Boolean         |
-
-Se evita repetir análisis si el ADN ya fue procesado.
-
----
-
-# ⚡ Procesamiento Asíncrono
-
-El método:
-
-```java
-@Async
-public CompletableFuture<Boolean> analyzeDnaAsync(...)
+```json
+{
+  "status": "UP",
+  "timestamp": "2025-11-24T..."
+}
 ```
 
-permite ejecutar análisis de ADN en paralelo para alta carga.
-
 ---
 
-# 🛡 Rate Limiting
+# 🧪 Ejecución del proyecto
 
-Se implementa un filtro global:
-
-* Máximo **10 requests por minuto por IP**
-* Si se supera → **429 Too Many Requests**
-
-Ideal para evitar abuso del endpoint `/mutant`.
-
----
-
-# 🧠 Caché con @Cacheable
-
-```java
-@Cacheable("stats")
-public StatsResponse getStats()
-```
-
-Evita recalcular estadísticas en cada request.
-
----
-
-# 🧪 Tests (100% del proyecto cubierto)
-
-La app contiene tests de:
-
-## ✔ Unit Tests
-
-* `MutantDetectorTest` (detección mutante)
-* `DnaValidatorTest` (validación NxN, caracteres, etc.)
-* `MutantServiceTest`
-* `MutantServiceAsyncTest`
-* Controllers (MockMvc)
-* Exception Handler
-
-## ✔ Integration Tests
-
-* `MutantIntegrationTest`
-* `StatsCacheIntegrationTest`
-* `RateLimitingIntegrationTest`
-
-## ✔ Repository Tests
-
-* `DnaRecordRepositoryTest`
-
-Todos ejecutables con:
+### ▶ **1. Compilar**
 
 ```bash
-./gradlew test
+./gradlew clean build
 ```
 
----
-
-# 📊 Jacoco Coverage
-
-Generar reporte:
-
-```bash
-./gradlew jacocoTestReport
-```
-
-<img width="1440" height="368" alt="Captura de pantalla 2025-11-24 a la(s) 20 30 06" src="https://github.com/user-attachments/assets/30d8c8f3-5821-41d8-97d2-9b0d8dcaa8c9" />
-
-El reporte queda en:
-
-```
-build/reports/jacoco/test/html/index.html
-```
-
----
-
-# ☁ Deploy en Render
-
-### Paso 1 — Crear servicio Web
-
-* Lenguaje: **Java**
-* Build command:
-
-  ```
-  ./gradlew build
-  ```
-* Start command:
-
-  ```
-  java -jar build/libs/mutantes-0.0.1-SNAPSHOT.jar
-  ```
-
-### Paso 2 — Variables recomendadas:
-
-```
-JAVA_OPTS = -Xmx512m
-ENV = production
-```
-
-### Paso 3 — Exponer puerto 8080
-
-Render detectará automáticamente el jar.
-
----
-
-# 🔧 Cómo levantar en local
+### ▶ **2. Levantar la API**
 
 ```bash
 ./gradlew bootRun
 ```
 
-H2 Console:
+Disponible en:
+👉 [http://localhost:8080](http://localhost:8080)
+
+---
+
+# 📘 Swagger / OpenAPI
 
 ```
-http://localhost:8080/h2-console
+http://localhost:8080/swagger-ui/index.html
 ```
 
-JDBC URL:
+API Docs en JSON:
 
 ```
-jdbc:h2:mem:mutantesdb
-```
-
-Swagger UI:
-
-```
-http://localhost:8080/swagger-ui.html
+http://localhost:8080/v3/api-docs
 ```
 
 ---
 
-# 📝 Autor
+# 🧪 Correr los tests
+
+```bash
+./gradlew test
+```
+
+Todos los tests unitarios + integración deben pasar correctamente.
+
+---
+
+# 📊 Reporte de cobertura Jacoco
+
+### ▶ Generar reporte:
+
+```bash
+./gradlew jacocoTestReport
+```
+
+### ▶ Abrir reporte HTML:
+
+Mac/Linux:
+
+```bash
+open build/reports/jacoco/test/html/index.html
+```
+
+Windows:
+
+```bash
+start build/reports/jacoco/test/html/index.html
+```
+
+### 📌 **Mi cobertura final:**
+
+*(Incluye controlador, servicio, validador y excepciones)*
+
+👉 **91% de cobertura total**
+
+![Captura de pantalla 2025-11-24 a la(s) 22.41.21.png](../../Desktop/Captura%20de%20pantalla%202025-11-24%20a%20la%28s%29%2022.41.21.png)
+
+---
+
+# 🧠 Lógica de detección de mutantes
+
+Se detectan secuencias de **4 letras iguales** en:
+
+* Horizontal
+* Vertical
+* Diagonal principal
+* Diagonal inversa
+
+Si se encuentran **2 o más**, el ADN es mutante.
+
+---
+
+# 🧩 Diagrama de Secuencia 
+
+El siguiente diagrama de secuencia representa **de manera integral el flujo completo de la aplicación Mutantes API**, abarcando todos los endpoints implementados:
+
+* **POST /mutant**
+* **GET /api/stats**
+* **GET /health**
+
+El diagrama muestra **todos los actores, componentes internos y objetos creados**, reflejando cómo viaja la información desde el cliente hasta la capa de datos y regresa con la respuesta procesada.
+
+Incluye:
+
+### ✔ Controllers
+
+* *MutantController*
+* *StatsController*
+* *HealthController*
+
+### ✔ Validación
+
+* *DnaValidator*, que verifica formato NxN y caracteres válidos.
+
+### ✔ Lógica de negocio
+
+* *MutantService*, que coordina el proceso.
+* *MutantDetector*, que ejecuta el algoritmo de detección horizontal, vertical y diagonal.
+
+### ✔ Persistencia
+
+* *DnaRecordRepository*, responsable de almacenar cada ADN analizado y recuperar estadísticas de mutantes/humanos.
+
+### ✔ Objetos DTO creados
+
+* *DnaRequest*
+* *StatsResponse*
+* *HealthResponse*
+
+### ✔ Respuestas según caso
+
+El diagrama muestra los flujos alternativos:
+
+* **200 OK** si el ADN es mutante
+* **403 Forbidden** si no lo es
+* **200 OK** en stats y health
+
+Este diagrama centraliza todo el comportamiento del sistema y permite visualizar cómo interactúan los módulos que implementaste durante el desarrollo.
+
+![Untitled diagram-2025-11-25-020729.png](../../Desktop/Untitled%20diagram-2025-11-25-020729.png)
+
+---
+
+# 🧱 Modelo de Datos (Entidad)
+
+```java
+@Entity
+public class DnaRecord {
+    @Id @GeneratedValue
+    private Long id;
+
+    @Column(unique = true)
+    private String dnaHash;
+
+    private boolean isMutant;
+}
+```
+
+Hash SHA-256 asegura unicidad por ADN evaluado.
+
+---
+
+# 🚦 Rate Limiting
+
+Implementado en `RateLimitingFilter`:
+
+* Límite: **10 requests/minuto por IP**
+* Excepciones:
+
+    * `/v3/api-docs`
+    * `/swagger-ui/**`
+
+---
+
+# ❗ Manejo de Errores (GlobalExceptionHandler)
+
+### Ejemplo 400 BAD REQUEST:
+
+```json
+{
+  "timestamp": "...",
+  "error": "Invalid DNA",
+  "message": "Matriz no es NxN"
+}
+```
+
+### Ejemplo 500 INTERNAL SERVER ERROR:
+
+```json
+{
+  "timestamp": "...",
+  "error": "Internal Server Error",
+  "message": "..."
+}
+```
+
+---
+
+# 📦 Cómo clonar y ejecutar el proyecto
+
+```bash
+git clone https://github.com/guilleefiore/global-mutantes.git
+cd global-mutantes
+./gradlew bootRun
+```
+
+---
+
+# ✔ Evaluación del desafío (cumplimiento)
+
+| Requisito                     | Estado |
+| ----------------------------- | ------ |
+| POST /mutant funcionando      | ✔      |
+| GET /stats funcionando        | ✔      |
+| Validaciones ADN              | ✔      |
+| Hash + persistencia           | ✔      |
+| Tests unitarios + integración | ✔      |
+| Jacoco                        | ✔      |
+| Swagger                       | ✔      |
+| Rate Limit opcional           | ✔      |
+| Arquitectura limpia           | ✔      |
+| README completo               | ✔      |
+
+---
+
+# 🏁 Autor
 
 **Guillermina Fiore**
-Legajo: 50024
-UTN – FRM
-Proyecto final de APIs y Testing Avanzado
+**Legajo:** 50024
+UTN — Facultad Regional Mendoza
+2025
