@@ -10,112 +10,76 @@ public class MutantDetector {
     private static final int SEQ = 4;
 
     public boolean isMutant(String[] dna) {
-        log.debug("Analizando ADN de tamaño {}x{}", dna.length, dna[0].length());
+        int n = dna.length;
+
+        // Convertir a matriz char[][] para máxima eficiencia
+        char[][] m = new char[n][n];
+        for (int i = 0; i < n; i++) {
+            m[i] = dna[i].toCharArray();
+        }
 
         int count = 0;
-        count += checkHorizontal(dna);
-        count += checkVertical(dna);
-        count += checkDiagonalRight(dna);
-        count += checkDiagonalLeft(dna);
 
-        log.debug("Secuencias encontradas: {}", count);
-        return count >= 2;
-    }
+        // Recorremos TODA la matriz una sola vez (O(N²))
+        for (int row = 0; row < n; row++) {
+            for (int col = 0; col < n; col++) {
 
-    // -------------------
-    // HORIZONTAL
-    // -------------------
-    private int checkHorizontal(String[] dna) {
-        int found = 0;
+                char c = m[row][col];
 
-        for (int row = 0; row < dna.length; row++) {
-            String line = dna[row];
-            for (int col = 0; col <= line.length() - SEQ; col++) {
+                // ----------------------------
+                // 1. Horizontal →
+                // ----------------------------
+                if (col <= n - SEQ &&
+                        c == m[row][col + 1] &&
+                        c == m[row][col + 2] &&
+                        c == m[row][col + 3]) {
 
-                if (isSequence(line.charAt(col), line, col)) {
-                    found++;
-                    log.debug("↔ Secuencia horizontal encontrada en fila {} col {}", row, col);
+                    count++;
+                    log.debug("↔ Horizontal en ({},{})", row, col);
+                    if (count >= 2) return true;
+                }
+
+                // ----------------------------
+                // 2. Vertical ↓
+                // ----------------------------
+                if (row <= n - SEQ &&
+                        c == m[row + 1][col] &&
+                        c == m[row + 2][col] &&
+                        c == m[row + 3][col]) {
+
+                    count++;
+                    log.debug("↕ Vertical en ({},{})", row, col);
+                    if (count >= 2) return true;
+                }
+
+                // ----------------------------
+                // 3. Diagonal derecha ↘
+                // ----------------------------
+                if (row <= n - SEQ && col <= n - SEQ &&
+                        c == m[row + 1][col + 1] &&
+                        c == m[row + 2][col + 2] &&
+                        c == m[row + 3][col + 3]) {
+
+                    count++;
+                    log.debug("↘ Diagonal ↘ en ({},{})", row, col);
+                    if (count >= 2) return true;
+                }
+
+                // ----------------------------
+                // 4. Diagonal izquierda ↙
+                // ----------------------------
+                if (row <= n - SEQ && col >= SEQ - 1 &&
+                        c == m[row + 1][col - 1] &&
+                        c == m[row + 2][col - 2] &&
+                        c == m[row + 3][col - 3]) {
+
+                    count++;
+                    log.debug("↙ Diagonal ↙ en ({},{})", row, col);
+                    if (count >= 2) return true;
                 }
             }
         }
-        return found;
-    }
 
-    // -------------------
-    // VERTICAL
-    // -------------------
-    private int checkVertical(String[] dna) {
-        int found = 0;
-
-        for (int col = 0; col < dna.length; col++) {
-            for (int row = 0; row <= dna.length - SEQ; row++) {
-
-                char c = dna[row].charAt(col);
-
-                if (dna[row + 1].charAt(col) == c &&
-                        dna[row + 2].charAt(col) == c &&
-                        dna[row + 3].charAt(col) == c) {
-
-                    found++;
-                    log.debug("↕ Secuencia vertical encontrada en fila {} col {}", row, col);
-                }
-            }
-        }
-        return found;
-    }
-
-    // -------------------
-    // DIAGONAL DERECHA
-    // -------------------
-    private int checkDiagonalRight(String[] dna) {
-        int found = 0;
-
-        for (int row = 0; row <= dna.length - SEQ; row++) {
-            for (int col = 0; col <= dna.length - SEQ; col++) {
-
-                char c = dna[row].charAt(col);
-
-                if (dna[row + 1].charAt(col + 1) == c &&
-                        dna[row + 2].charAt(col + 2) == c &&
-                        dna[row + 3].charAt(col + 3) == c) {
-
-                    found++;
-                    log.debug("↘ Secuencia diagonal ↘ encontrada en fila {} col {}", row, col);
-                }
-            }
-        }
-        return found;
-    }
-
-    // -------------------
-    // DIAGONAL IZQUIERDA
-    // -------------------
-    private int checkDiagonalLeft(String[] dna) {
-        int found = 0;
-
-        for (int row = 0; row <= dna.length - SEQ; row++) {
-            for (int col = SEQ - 1; col < dna.length; col++) {
-
-                char c = dna[row].charAt(col);
-
-                if (dna[row + 1].charAt(col - 1) == c &&
-                        dna[row + 2].charAt(col - 2) == c &&
-                        dna[row + 3].charAt(col - 3) == c) {
-
-                    found++;
-                    log.debug("↙ Secuencia diagonal ↙ encontrada en fila {} col {}", row, col);
-                }
-            }
-        }
-        return found;
-    }
-
-    // -------------------
-    // Helper horizontal
-    // -------------------
-    private boolean isSequence(char c, String line, int col) {
-        return line.charAt(col + 1) == c &&
-                line.charAt(col + 2) == c &&
-                line.charAt(col + 3) == c;
+        return false;
     }
 }
