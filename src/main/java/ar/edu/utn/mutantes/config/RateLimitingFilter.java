@@ -78,7 +78,7 @@ public class RateLimitingFilter extends OncePerRequestFilter {
         return path.startsWith("/v3/api-docs") ||
                 path.startsWith("/swagger-ui") ||
                 path.startsWith("/swagger-ui.html") ||
-                path.startsWith("/h2-console") ||      // <-- Necesario para que H2 funcione
-                path.equals("/error");                 // <-- Evita que ensucie swagger y browser
+                path.startsWith("/h2-console") ||
+                path.equals("/error");
     }
 }

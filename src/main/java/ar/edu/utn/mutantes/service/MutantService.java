@@ -54,7 +54,7 @@ public class MutantService {
     }
 
     // ============================================================
-    //  MÉTODO ASÍNCRONO — EJERCICIO 8 (Async Processing)
+    //  MÉTODO ASÍNCRONO
     // ============================================================
     @Async
     public CompletableFuture<Boolean> analyzeDnaAsync(String[] dna) {

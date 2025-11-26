@@ -21,7 +21,7 @@ public class GlobalExceptionHandler {
         Map<String, Object> body = new HashMap<>();
         body.put("timestamp", LocalDateTime.now().toString());
         body.put("error", "Invalid DNA");
-        body.put("message", ex.getMessage());   // puede ser null, y está ok
+        body.put("message", ex.getMessage());
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
@@ -37,7 +37,7 @@ public class GlobalExceptionHandler {
         Map<String, Object> body = new HashMap<>();
         body.put("timestamp", LocalDateTime.now().toString());
         body.put("error", "Bad Request");
-        body.put("message", ex.getMessage());  // puede ser null también
+        body.put("message", ex.getMessage());
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)

@@ -12,5 +12,4 @@ import org.springframework.context.annotation.Configuration;
                 description = "API para detección de ADN mutante y estadísticas"
         )
 )
-public class SwaggerConfig {
-}
+public class SwaggerConfig {}
